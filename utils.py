@@ -91,7 +91,6 @@ class Mensaje:
         self.received_msj = np.mod(self.hamming_msj + noise, 2)
         return
 
-
     def get_metrics(self):
         """
         esta función genera métricas interesantes
@@ -144,6 +143,7 @@ class Mensaje:
         self.corrected_msj = msj_corrected
         self.metrics = metrics
         return
+
 
 if __name__ == "__main__":
     msj = Mensaje(100)
