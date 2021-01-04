@@ -41,6 +41,8 @@ class Mensaje:
         self.p_error = None
         self.hamming_msj = None
         self.received_msj = None
+        self.corrected_msj = None
+        self.metrics = None
 
     def __len__(self):
         if isinstance(self.hamming_msj, type(None)):
@@ -82,14 +84,69 @@ class Mensaje:
         :param p: probabilidad de bitflip
         :return: None
         """
+        if isinstance(self.hamming_msj, type(None)):
+            self.make_hamming_msj()
         self.p_error = p
         noise = np.random.binomial(1, p, len(self.hamming_msj))
         self.received_msj = np.mod(self.hamming_msj + noise, 2)
         return
 
 
+    def get_metrics(self):
+        """
+        esta función genera métricas interesantes
+        :return: None
+        """
+        if isinstance(self.received_msj, type(None)):
+            print("primero ejecutar método 'send_noisy'")
+            return
+        hamming_distance = np.bitwise_xor(self.hamming_msj, self.received_msj).sum()  # número de errores
+
+        if hamming_distance > 0:
+            errors = True
+        else:
+            errors = False
+
+        bits_for_parity_check = np.where(self.received_msj == 1)[0] + 1
+        parity_check = np.bitwise_xor.reduce(bits_for_parity_check)
+        if parity_check > 0:
+            found_error = True
+        else:
+            found_error = False
+
+        correction_worked = None
+        if found_error:
+            if parity_check > len(self.received_msj):
+                out_of_bound = True
+                hamming_distance_corrected = hamming_distance
+                msj_corrected = self.received_msj
+            else:
+                out_of_bound = False
+                index_to_flip = parity_check - 1
+
+                msj_corrected = self.received_msj.copy()
+                msj_corrected[index_to_flip] = np.mod(msj_corrected[index_to_flip] + 1, 2)
+
+                hamming_distance_corrected = np.bitwise_xor(self.hamming_msj, msj_corrected).sum()
+            if (hamming_distance_corrected > 0) or out_of_bound:
+                correction_worked = False
+            else:
+                correction_worked = True
+
+        metrics = dict(
+            hamming_distance=hamming_distance,
+            errors=errors,
+            found_error=found_error,
+            out_of_bound=out_of_bound,
+            correction_worked=correction_worked
+        )
+
+        self.corrected_msj = msj_corrected
+        self.metrics = metrics
+        return
+
 if __name__ == "__main__":
     msj = Mensaje(100)
     msj.make_hamming_msj()
-    ms = Mensaje(100)
-    len(ms)
+    msj.send_noisy(.5)
+    msj.get_metrics()
