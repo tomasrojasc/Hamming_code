@@ -131,6 +131,9 @@ class Mensaje:
                 correction_worked = False
             else:
                 correction_worked = True
+        else:
+            out_of_bound = False
+            msj_corrected = self.hamming_msj
 
         metrics = dict(
             hamming_distance=hamming_distance,
@@ -144,6 +147,33 @@ class Mensaje:
         self.metrics = metrics
         return
 
+
+class Experiment:
+    def __init__(self, p, bits, number_of_trials):
+        self.p, self.n_bit, self.n = p, bits, number_of_trials
+        self.experiments = []
+        self.report = None
+
+        for i in range(number_of_trials):
+            current_experiment = Mensaje(self.n_bit)
+            current_experiment.send_noisy(self.p)
+            current_experiment.get_metrics()
+            self.experiments.append(current_experiment)
+
+        self.metric_keys = [key for key in self.experiments[0].metrics]
+
+    def make_report(self):
+        """
+        esta función hace un resumen de toodo lo que pasó
+        :return: None
+        """
+        self.report = {}
+        for key in self.metric_keys:
+            current_key = []
+            for experiment in self.experiments:
+                current_key.append(experiment.metrics[key])
+            self.report[key] = current_key
+        return
 
 if __name__ == "__main__":
     msj = Mensaje(100)
