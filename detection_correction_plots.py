@@ -73,6 +73,8 @@ for filtro in filters:
 
 ax.legend()
 ax.set_xscale("log")
+ax.set_xlabel("largo del mensaje (Hamming)")
+ax.set_ylabel("porcentaje de corrección exitosa")
 plt.savefig("plots/percentage_correction_worked.png", dpi=300)
 plt.show()
 
