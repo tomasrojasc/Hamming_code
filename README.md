@@ -9,3 +9,8 @@ En particular hay dos objetos importantes:
 `Mensaje` es un objeto que representa un mensaje en binario que es generado de manera aleatoria, tiene métodos para poder enviar el mensaje binario a travez de un canal ruidoso con probabilidad `p` 
 
 `Experimento` es un objeto encargado de administrar mucchas instancias de `Mensaje` con carácteristicas similares, solo difiriendo en el mensaje en sí, esto nos permite sacar métricas estadísticas sobre el comportamiento del algoritmo.
+
+# Cómo usar
+
+El primer script que hay que correr es el `experiments.py`
+
