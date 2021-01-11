@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-n = np.logspace(0, 5, 10, dtype=int)
+n = np.logspace(0, 5, 10, dtype=int)[2:]
 ps = 1 / np.logspace(0, 4, 10)
 ps = ps[::-1]
 legend = []

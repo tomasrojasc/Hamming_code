@@ -59,7 +59,7 @@ class Mensaje:
         n = 0  # némero de bits de paridad
         m = len(self.msj)  # número de bits del mensaje
 
-        while not (m + n <= 2 ** n):
+        while not (m + n < 2 ** n):
             n += 1
 
         self.parity_bits = n
@@ -319,8 +319,8 @@ def percentages_erros(report):
     instances = len(report["hamming_distance"])
     empirical = count / instances
     len_hamming = report["len_hamming_message"]
-
-    binomial = binom(c)
+    p = report["p_error"]
+    binomial = binom(len_hamming, p)
     theoretical = 1 - binomial.pmf(0) - binomial.pmf(1)
     return dict(theoretical=theoretical, empirical=empirical)
 

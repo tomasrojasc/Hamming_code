@@ -46,7 +46,7 @@ fig, ax = plt.subplots()
 for filtro in filters:
     x, y = len_hamming_message[filtro], detection_ratio[filtro]
     order = x.argsort()
-    ax.scatter(x[order], y[order], s=20, marker='o', c=color[filtro][0], label="p={:.5f}".format(p_error[filtro][0]))
+    ax.scatter(x[order], y[order], marker='o', c=color[filtro][0], label="p={:.5f}".format(p_error[filtro][0]))
     ax.plot(x[order], y[order], '--', c=color[filtro][0])
 
 ax.set_xscale("log")
@@ -68,7 +68,7 @@ fig, ax = plt.subplots()
 for filtro in filters:
     x, y = len_hamming_message[filtro], correction_worked[filtro]
     order = x.argsort()
-    ax.scatter(x[order], y[order], s=20, marker='o', c=color[filtro][0], label="p={:.5f}".format(p_error[filtro][0]))
+    ax.scatter(x[order], y[order], marker='o', c=color[filtro][0], label="p={:.5f}".format(p_error[filtro][0]))
     ax.plot(x[order], y[order], '--', c=color[filtro][0])
 
 ax.legend()
